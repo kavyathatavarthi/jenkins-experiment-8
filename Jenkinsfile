@@ -8,6 +8,11 @@ pipeline {
         // Task 2: Define two parameters
         string(name: 'APP_NAME', defaultValue: 'MyApplication', description: 'Enter App Name')
         string(name: 'VERSION', defaultValue: 'v1.0', description: 'Enter Version')
+        // Task 2: Ensure all parameters are defined
+        string(name: 'PROJECT_NAME', defaultValue: 'Exp8', description: '')
+        string(name: 'BUILD_ID', defaultValue: '8', description: '')
+        string(name: 'APP_NAME', defaultValue: 'PipelineLab', description: '')
+        string(name: 'VERSION', defaultValue: '2.0', description: '')
     }
     stages {
         stage('Version 1') {
@@ -36,6 +41,25 @@ pipeline {
                 checkout scm
                 // Task 3: Display combined message
                 echo "Task 3: Deployment of ${params.APP_NAME} at version ${params.VERSION} is ready."
+            }
+        }
+        stage('Version 4') {
+            steps {
+                // Task 1: Checkout latest commit
+                checkout scm
+                
+                // Task 2 (Display all):
+                echo "Displaying Parameters: Project=${params.PROJECT_NAME}, ID=${params.BUILD_ID}, App=${params.APP_NAME}, Ver=${params.VERSION}"
+                
+                // Task 3 (Store in parameters.txt):
+                bat """
+                echo Project: ${params.PROJECT_NAME} > parameters.txt
+                echo BuildID: ${params.BUILD_ID} >> parameters.txt
+                echo AppName: ${params.APP_NAME} >> parameters.txt
+                echo Version: ${params.VERSION} >> parameters.txt
+                """
+                echo "Contents of parameters.txt:"
+                bat "type parameters.txt"
             }
         }
     }
